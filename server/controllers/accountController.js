@@ -14,9 +14,9 @@ const schemaUser = Joi.object({
 
 
 router.post('/signup', async (req, res) => {
-    const { firstname, lastname, email, password } = req.body;
+    const { email, password, username } = req.body;
     try {
-        const userIsValid = schemaUser.validate({ firstname, lastname, email, password });
+        const userIsValid = schemaUser.validate({ email, password, username });
         const userExists = await User.findByEmail(userIsValid.value.email);
         if (userIsValid.error) return res.status(422).json({ error: userIsValid.error.details[0].message });
         if (userExists) return res.json({ error: 'Email already exists' }).status(409);
