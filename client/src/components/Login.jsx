@@ -25,19 +25,27 @@ const Login = () => {
   };
 
   return (
-    <div className="login-block">
-      <div className="login">
-        <h2 className="login-h2 mt-1 text-center w-full z-10">Se connecter</h2>
-        <form className="login-form" onSubmit={handleSubmit}>
-          {error && <p className="login-error">{error}</p>}
-          <div className="form-group">
-            <label htmlFor="email" className="label my-2 pt-4 mt-3">
+    <div className="flex items-center justify-center">
+      <div className="w-full max-w-md">
+        <form
+          className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4"
+          onSubmit={handleSubmit}
+        >
+          <div className="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
+            Login
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-normal mb-2"
+              htmlFor="username"
+            >
               Email
             </label>
             <input
-              type="text"
-              className="inputForm appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               name="email"
+              v-model="form.email"
+              type="email"
               id="email"
               value={email}
               placeholder="votre email"
@@ -45,28 +53,57 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="login-form-group">
-            <label htmlFor="password" className="label my-3 pt-1 mt-6">
-              Mot de passe
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-normal mb-2"
+              htmlFor="password"
+            >
+              Password
             </label>
             <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              v-model="form.password"
               type="password"
-              className="inputForm appearance-none block w-full bg-white text-gray-700 rounded-lg py-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              placeholder="Password"
               name="password"
               id="password"
               value={password}
-              placeholder="votre mot de passe"
               required="required"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="login-button bg-white hover:bg-gray-100 text-black font-medium py-3 px-4 mt-3 mb-3 w-60"
-          >
-            Se connecter
-          </button>
+          <div className="flex items-center justify-between">
+            {error && (
+              <div
+                className="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700"
+                role="alert"
+              >
+                <svg
+                  className="w-5 h-5 inline mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                <div>
+                  <span className="font-medium">{error}</span>
+                </div>
+              </div>
+            )}
+            <button
+              className="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700"
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
         </form>
+        <p className="text-center text-gray-500 text-xs">&copy;2022 WCSCP4.</p>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
 import UserDashboard from './components/UserDashboard.jsx';
+import './App.css';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
