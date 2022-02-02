@@ -7,11 +7,9 @@ const router = express.Router();
 
 const saltRounds = 10;
 const schemaUser = Joi.object({
-    firstname: Joi.string().max(255),
-    lastname: Joi.string().max(255),
     email: Joi.string().email().required().trim(true),
     password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required().trim(true),
-    is_admin: Joi.boolean().default(false)
+    username: Joi.string().max(255)
 });
 
 
@@ -45,8 +43,8 @@ router.post('/login', async (req, res) => {
         if (userExists) {
             const passwordIsValid = bcrypt.compareSync(userIsValid.value.password, userExists.password);
             if (passwordIsValid){
-                const token = calculateToken(userIsValid.value.email, userExists.is_admin);
-                res.status(200).send({ token: token, user: { email: userExists.email, role: userExists.is_admin } });
+                const token = calculateToken(userIsValid.value.email);
+                res.status(200).send({ token: token, user: { email: userExists.email } });
             } 
             else res.status(401).json({ error: 'Invalid password' });
         } else res.status(404).json({ error: 'User not found' });
