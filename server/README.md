@@ -13,8 +13,8 @@
 
 ### Entrypoint available :
 - 'http://localhost:8000/home'
-- 'http://localhost:8000/security/registration'
-- 'http://localhost:8000/security/login'
+- 'http://localhost:8000/account/registration'
+- 'http://localhost:8000/account/login'
 
 ### Create your own entrypoints (following MVC architecture)
 
