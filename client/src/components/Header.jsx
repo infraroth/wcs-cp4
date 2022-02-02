@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 
 const Header = () => {
+  const { user } = useContext(UserContext);
   return (
     <>
       <header>
@@ -28,52 +31,56 @@ const Header = () => {
             </section>
             <section>
               <ul className="md:space-x-8 space-x-6 text-gray-900 font-semibold hidden md:flex">
-                <li className="relative group">
-                  <Link
-                    to="/"
-                    className="group focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none rounded-lg"
-                  >
-                    Home
-                  </Link>
-                  <div className="w-full h-0.5 bg-transparent group-hover:bg-purple-500 transition-al absolute bottom-0" />
-                </li>
+                {user.username && (
+                  <li className="relative group">
+                    <Link
+                      to={`account/${user.username}`}
+                      className="group focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none rounded-lg"
+                    >
+                      Account
+                    </Link>
+                    <div className="w-full h-0.5 bg-transparent group-hover:bg-purple-500 transition-al absolute bottom-0" />
+                  </li>
+                )}
               </ul>
             </section>
-            <section>
-              <button className="flex md:hidden hover:bg-gray-100 p-2 rounded-full transition-all focus:ring focus:ring-purple-500 focus:ring-opacity-25 active:bg-gray-200 outline-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-              <ul className="md:flex hidden space-x-4">
-                <li>
-                  <Link
-                    to="/login"
-                    className="bg-transparent  px-4 py-1 rounded-xl border-purple-500 border-2 text-purple-500 font-semibold hover:bg-gray-100 active:bg-gray-200 focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none"
+            {!user.username && (
+              <section>
+                <button className="flex md:hidden hover:bg-gray-100 p-2 rounded-full transition-all focus:ring focus:ring-purple-500 focus:ring-opacity-25 active:bg-gray-200 outline-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
                   >
-                    Login
-                  </Link>
-                </li>
+                    <path
+                      fillRule="evenodd"
+                      d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <ul className="md:flex hidden space-x-4">
+                  <li>
+                    <Link
+                      to="/login"
+                      className="bg-transparent  px-4 py-1 rounded-xl border-purple-500 border-2 text-purple-500 font-semibold hover:bg-gray-100 active:bg-gray-200 focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none"
+                    >
+                      Login
+                    </Link>
+                  </li>
 
-                <li>
-                  <Link
-                    to="/register"
-                    className="bg-purple-500 px-4 py-1 rounded-xl border-purple-500 border-2 text-white hover:bg-purple-400 active:bg-purple-600 focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none"
-                  >
-                    Register
-                  </Link>
-                </li>
-              </ul>
-            </section>
+                  <li>
+                    <Link
+                      to="/register"
+                      className="bg-purple-500 px-4 py-1 rounded-xl border-purple-500 border-2 text-white hover:bg-purple-400 active:bg-purple-600 focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none"
+                    >
+                      Register
+                    </Link>
+                  </li>
+                </ul>
+              </section>
+            )}
           </div>
         </nav>
       </header>

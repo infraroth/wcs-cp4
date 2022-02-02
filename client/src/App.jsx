@@ -62,7 +62,10 @@ const App = () => {
                   <Route exact path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/account" element={<ProtectedRoute />}>
-                    <Route path="/account" element={<UserDashboard />} />
+                    <Route
+                      path="/account/:username"
+                      element={<UserDashboard />}
+                    />
                   </Route>
                 </Routes>
               </main>

@@ -1,5 +1,10 @@
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
+
 const UserDashboard = () => {
-  return <>User</>;
+  const { user } = useContext(UserContext);
+
+  return <>{user.username}</>;
 };
 
 export default UserDashboard;

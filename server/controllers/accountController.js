@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
             const passwordIsValid = bcrypt.compareSync(userIsValid.value.password, userExists.password);
             if (passwordIsValid) {
                 const token = calculateToken(userIsValid.value.email);
-                res.status(200).send({ token: token, user: { email: userExists.email } });
+                res.status(200).send({ token: token, user: { email: userExists.email, username: userExists.username } });
             }
             else res.status(401).json({ error: 'Invalid password' });
         } else res.status(404).json({ error: 'User not found' });
