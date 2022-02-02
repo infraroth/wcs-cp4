@@ -29,4 +29,13 @@ const createNew = (user) => {
     });
 };
 
-export default { findByEmail, createNew, findById };
+const updateUser = (id, user) => {
+    return new Promise((resolve, reject) => {
+        dbConnect.query('UPDATE user SET ? WHERE id = ?', [user, id], (err, result) => {
+            if (err) reject(err);
+            else resolve(result);
+        })
+    })
+}
+
+export default { findByEmail, createNew, findById, updateUser };
