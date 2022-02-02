@@ -1,5 +1,11 @@
+import Gallery from './Galley';
+
 const Home = () => {
-  return <></>;
+  return (
+    <>
+      <Gallery />
+    </>
+  );
 };
 
 export default Home;
