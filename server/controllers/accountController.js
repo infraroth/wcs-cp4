@@ -13,6 +13,7 @@ const schemaUser = Joi.object({
 });
 const schemaUpdateUser = Joi.object({
     email: Joi.string().email().trim(true),
+    oldPassword: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).trim(true),
     password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).trim(true),
     username: Joi.string().max(255)
 });
@@ -68,20 +69,31 @@ router.post('/login', async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-    const { email, password, username } = req.body;
+    const { email, oldPassword, password, username } = req.body;
     try {
         const userIsValid = await schemaUpdateUser.validate({
             email,
+            oldPassword,
             password,
             username,
         });
         if (userIsValid.value.password) {
-            const hash = bcrypt.hashSync(userIsValid.value.password, saltRounds);
-            userIsValid.value.password = hash;
-        }
-        const userUpdate = await User.updateUser(req.params.id, userIsValid.value);
-        if (userUpdate) res.status(201).json(userUpdate);
-        else res.status(422).json({ message: error.message });
+            const userExists = await User.findByEmail(userIsValid.value.email);
+            if (userExists) {
+                const passwordIsValid = bcrypt.compareSync(userIsValid.value.oldPassword, userExists.password);
+                if (passwordIsValid) {
+                    const hash = bcrypt.hashSync(userIsValid.value.password, saltRounds);
+                    userIsValid.value.password = hash;
+                    const token = calculateToken(userIsValid.value.email);
+                    return res.status(200).send({ token: token, user: { id: userExists.id, email: userExists.email, username: userExists.username } });
+                } else {
+                    return res.status(401).json({ error: 'Invalid password' });
+                }
+            } else res.status(404).json({ error: 'User not found' });
+            const userUpdate = await User.updateUser(req.params.id, userIsValid.value);
+            if (userUpdate) res.status(201).json(userUpdate);
+            else res.status(422).json({ message: error.message });
+        } 
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
