@@ -8,6 +8,7 @@ import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
 import UserDashboard from './components/UserDashboard.jsx';
+import EditArt from './components/EditArt.jsx';
 import './App.css';
 
 import axios from 'axios';
@@ -62,10 +63,8 @@ const App = () => {
                   <Route exact path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/account" element={<ProtectedRoute />}>
-                    <Route
-                      path="/account/:username"
-                      element={<UserDashboard />}
-                    />
+                    <Route path="/account" element={<UserDashboard />} />
+                    <Route path="/account/art/:id" element={<EditArt />} />
                   </Route>
                 </Routes>
               </main>

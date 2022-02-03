@@ -14,7 +14,7 @@ const Login = () => {
       axios.post(url, user).then(({ data }) => {
         if (data.error) setError(data.error);
         else {
-          window.location.href = `/account/${data.user.username}`;
+          window.location.href = `/account`;
           localStorage.setItem('token', data.token);
           localStorage.setItem(`user`, JSON.stringify(data.user));
         }

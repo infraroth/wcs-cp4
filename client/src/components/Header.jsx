@@ -34,7 +34,7 @@ const Header = () => {
                 {user.username && (
                   <li className="relative group">
                     <Link
-                      to={`account/${user.username}`}
+                      to={`account`}
                       className="group focus:ring focus:ring-purple-500 focus:ring-opacity-25 outline-none rounded-lg"
                     >
                       Account

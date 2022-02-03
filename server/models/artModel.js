@@ -16,7 +16,7 @@ const getAll = () => {
 
 const getAllByUser = (id) => {
   return new Promise((resolve, reject) => {
-      dbConnect.query(`SELECT a.id, a.name, a.description, a.image AS art, ua.user_id
+      dbConnect.query(`SELECT a.id, a.name, a.description, a.image, ua.user_id
       FROM user_artwork AS ua
       LEFT JOIN artwork AS a ON a.id = ua.artwork_id
       LEFT JOIN user AS u ON u.id = ua.user_id

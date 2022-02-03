@@ -39,6 +39,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const art = await Art.getOneById(id);
+    if (art) return res.status(200).json(art);
+    else res.status(404).json({ message: "Art not found" });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 router.get("/user/:id", async (req, res) => {
   const id = req.params.id;
   try {
@@ -50,9 +61,9 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", upload.single("img"), async (req, res) => {
   const { name, description, user_id } = req.body;
-  const image = `http://localhost:8000/images/${req.files[0].filename}`;
+  const image = `http://localhost:8000/${req.file.filename}`;
   try {
     const { error, value } = await schemaArt.validate({
       name,
@@ -71,16 +82,21 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-router.put("/:id", upload.single("image"), async (req, res) => {
+router.put("/:id", upload.single("img"), async (req, res) => {
   const { name, description } = req.body;
-  const image = `http://localhost:8000/images/${req.files[0].filename}`;
+  let { image } = req.body;
+  if (!image) {
+    if (req.file) {
+      image = `http://localhost:8000/${req.file.filename}`;
+    }
+  }
   try {
     const { error, value } = await schemaArt.validate({
       name,
       description,
       image,
     });
-    const artUpdate = await Brand.updateBrand(req.params.id, value);
+    const artUpdate = await Art.updateArt(req.params.id, value);
     if (artUpdate) res.status(201).json(value);
     else res.status(422).json({ message: error.message });
   } catch (err) {
