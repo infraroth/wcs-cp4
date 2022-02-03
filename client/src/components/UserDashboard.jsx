@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import CanvasDraw from 'react-canvas-draw';
+//import imageDataURI from 'image-data-uri';
 //import { Link } from 'react-router-dom';
 
 const UserDashboard = () => {
@@ -19,6 +21,9 @@ const UserDashboard = () => {
   const [username, setUsername] = useState('');
   const [accountError, setAccountError] = useState('');
 
+  const [canvas, setCanvas] = useState({});
+  const [saveableCanvas, setSaveableCanvas] = useState({});
+
   const formData = new FormData();
   const config = {
     headers: { 'content-type': 'multipart/form-data' },
@@ -29,6 +34,20 @@ const UserDashboard = () => {
     setUsername(user.username);
     setEmail(user.email);
     setOldPassword(user.password);
+    setCanvas({
+      color: '#ffc600',
+      width: '100%',
+      height: 400,
+      brushRadius: 20,
+      brushColor: 'rgba(155, 12, 60, 0.3)',
+      lazyRadius: 12,
+      backgroundImg:
+        'https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg',
+      imgs: [
+        'https://upload.wikimedia.org/wikipedia/commons/a/a1/Nepalese_Mhapuja_Mandala.jpg',
+        'https://i.imgur.com/a0CGGVC.jpg',
+      ],
+    });
   }, []);
 
   const getUserArt = () => {
@@ -37,16 +56,18 @@ const UserDashboard = () => {
     });
   };
 
-  const handleImage = (e) => {
-    setImage(e.target.files[0]);
-  };
+  // const handleImage = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
 
   const postArt = (e) => {
     e.preventDefault();
+    console.log(saveableCanvas.getDataURL());
+    // console.log(image);
     if (name && image && description) {
       formData.append('name', name);
       formData.append('description', description);
-      formData.append('img', image);
+      formData.append('image', image);
       formData.append('user_id', user.id);
       axios
         .post('http://localhost:8000/art', formData, config)
@@ -103,6 +124,11 @@ const UserDashboard = () => {
           <div className="md:grid md:grid-cols-3 md:gap-6">
             {/* Add art */}
             <div className="mt-5 px-5 py-5 md:mt-0 md:col-span-2">
+              <CanvasDraw
+                ref={(canvasDraw) => setSaveableCanvas(canvasDraw)}
+                brushColor={canvas.brushColor}
+                canvasWidth={canvas.width}
+              />
               <form onSubmit={postArt}>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -127,7 +153,7 @@ const UserDashboard = () => {
                     </div>
                     <div className="grid grid-cols-3 gap-6">
                       <div className="col-span-3 sm:col-span-2">
-                        <label
+                        {/* <label
                           htmlFor="image"
                           className="block text-sm font-medium font-bold text-gray-700"
                         >
@@ -141,7 +167,7 @@ const UserDashboard = () => {
                             className="mt-5 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                             onChange={handleImage}
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div>
