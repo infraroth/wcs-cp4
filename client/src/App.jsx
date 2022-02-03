@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
+import Register from './components/Register.jsx';
 import UserDashboard from './components/UserDashboard.jsx';
 import EditArt from './components/EditArt.jsx';
 import './App.css';
@@ -62,6 +63,7 @@ const App = () => {
                 <Routes>
                   <Route exact path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
                   <Route path="/account" element={<ProtectedRoute />}>
                     <Route path="/account" element={<UserDashboard />} />
                     <Route path="/account/art/:id" element={<EditArt />} />
