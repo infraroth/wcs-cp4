@@ -61,16 +61,36 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-router.post("/", upload.single("img"), async (req, res) => {
-  const { name, description, user_id } = req.body;
-  const image = `http://localhost:8000/${req.file.filename}`;
+// router.post("/", upload.single("img"), async (req, res) => {
+//   const { name, description, user_id } = req.body;
+//   const image = `http://localhost:8000/${req.file.filename}`;
+//   try {
+//     const { error, value } = await schemaArt.validate({
+//       name,
+//       image,
+//       description,
+//     });
+//     const lastInsertId = await Art.createNew(value);
+//     console.log(lastInsertId);
+//     if (lastInsertId) {
+//       const newUserArt = await Art.addUserToArt(user_id, lastInsertId);
+//       const newArt = await Art.getOneById(lastInsertId);
+//       res.status(201).json({ artwork_id: newArt.id, user_artwork: newUserArt.insertId });
+//     } else res.status(422).json({ message: error.message });
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+router.post("/", async (req, res) => {
+  const { name, image, description, user_id } = req.body;
   try {
-    const { error, value } = await schemaArt.validate({
-      name,
-      image,
-      description,
-    });
-    const lastInsertId = await Art.createNew(value);
+    // const { error, value } = await schemaArt.validate({
+    //   name,
+    //   image,
+    //   description,
+    // });
+    const lastInsertId = await Art.createNew({ name, image, description, user_id });
     console.log(lastInsertId);
     if (lastInsertId) {
       const newUserArt = await Art.addUserToArt(user_id, lastInsertId);
