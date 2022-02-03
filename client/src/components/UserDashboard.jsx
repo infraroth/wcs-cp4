@@ -3,7 +3,6 @@ import { UserContext } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import CanvasDraw from 'react-canvas-draw';
-//import imageDataURI from 'image-data-uri';
 //import { Link } from 'react-router-dom';
 
 const UserDashboard = () => {
@@ -60,14 +59,28 @@ const UserDashboard = () => {
   //   setImage(e.target.files[0]);
   // };
 
+  const dataURLtoFile = (dataurl, filename) => {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    // eslint-disable-next-line no-undef
+    const u8arr = new Uint8Array(n);
+    while (n) {
+      u8arr[n - 1] = bstr.charCodeAt(n - 1);
+      n -= 1;
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   const postArt = (e) => {
     e.preventDefault();
-    console.log(saveableCanvas.getDataURL());
-    // console.log(image);
+    //console.log(saveableCanvas.getDataURL());
+    const file = dataURLtoFile(image, user.username);
     if (name && image && description) {
       formData.append('name', name);
       formData.append('description', description);
-      formData.append('image', image);
+      formData.append('image', file, file.name);
       formData.append('user_id', user.id);
       axios
         .post('http://localhost:8000/art', formData, config)
@@ -126,9 +139,13 @@ const UserDashboard = () => {
             <div className="mt-5 px-5 py-5 md:mt-0 md:col-span-2">
               <CanvasDraw
                 ref={(canvasDraw) => setSaveableCanvas(canvasDraw)}
+                onChange={() =>
+                  setImage(saveableCanvas.getDataURL(), console.log(image))
+                }
                 brushColor={canvas.brushColor}
                 canvasWidth={canvas.width}
               />
+              {/* <img src={image} alt="test" /> */}
               <form onSubmit={postArt}>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
